@@ -2,9 +2,18 @@ import { motion, useDragControls } from 'framer-motion';
 import React, { FC } from 'react'
 import styled from 'styled-components';
 import PanelBar from './PanelBar';
+import { useConstraintsContext } from '../../../context/AppRefContext';
+import { IPanelTheme } from '../../../styles/panelThemes';
 
-const Panel : FC = () => {
-  const dragControls = useDragControls()
+interface IPanelProps {
+  children: React.ReactNode,
+  panelTheme: IPanelTheme,
+  title: string
+}
+
+const Panel : FC<IPanelProps> = ({children,panelTheme,title}) => {
+  const dragControls = useDragControls();
+  const constraints = useConstraintsContext();
 
   const startDrag = (event : React.PointerEvent<Element>) => {
     dragControls.start(event, { snapToCursor: false })
@@ -13,18 +22,20 @@ const Panel : FC = () => {
   return (
     <StyledPanelWrapper
         drag
+        dragConstraints={constraints} 
         dragMomentum={false}
         dragControls={dragControls}
-        dragListener={false}        
+        dragListener={false}
+        dragElastic={0}
     >
-        <PanelBar 
-          primaryColor='var(--color-primary)' 
-          secondaryColor='var(--color-secondary)' 
-          title="Carbonara Recipe"
+        <PanelBar
+          barColor={panelTheme.barColor}
+          buttonHoverColor={panelTheme.buttonHoverColor} 
+          title={title}
           handlePointerDown={startDrag}
         />
-        <StyledPanelChildren>
-            siemka
+        <StyledPanelChildren panelColor={panelTheme.panelColor}>
+            {children}
         </StyledPanelChildren>
     </StyledPanelWrapper>
   )
@@ -50,11 +61,11 @@ const StyledPanelWrapper = styled(motion.div)`
     box-shadow: var(--shadow-primary);
 `;
 
-const StyledPanelChildren = styled.div`
+const StyledPanelChildren = styled.div<{panelColor: string}>`
   flex: 1;
   padding: 1rem 2rem;
 
-  background: var(--color-yellow);
+  background: ${(props) => props.panelColor};
 `;
 
 export default Panel

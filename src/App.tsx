@@ -1,21 +1,26 @@
-import { FC } from "react"
+import { FC, useRef } from "react"
 import styled from "styled-components"
-import Panel from "./components/Panel/Panel";
+import Panel from "./components/Panels/Panel/Panel";
+import RecipePanel from "./components/RecipePanel";
+import { ConstraintsContext } from "./context/AppRefContext";
 import GlobalStyles from "./styles/globalStyles";
 
 const App : FC = () => {
+  const appRef = useRef(null);
   return (
-    <StyledAppWrapper>
-      <GlobalStyles />
+    <ConstraintsContext.Provider value={appRef}>
+      <StyledAppWrapper ref={appRef}>
+        <GlobalStyles />
 
-      <Panel />
-    </StyledAppWrapper>
+        <RecipePanel />
+      </StyledAppWrapper>
+    </ConstraintsContext.Provider>
   )
 }
 
 const StyledAppWrapper = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 `;
 
 export default App

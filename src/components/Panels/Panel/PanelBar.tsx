@@ -1,16 +1,16 @@
 import React, { FC } from 'react'
 import styled from 'styled-components';
-import { flexCenter, flexStart } from '../../styles/mixins';
+import { flexCenter, flexStart } from '../../../styles/mixins';
 import { FiX, FiMinus } from "react-icons/fi";
 
 interface IPanelBarProps {
-    primaryColor: string,
-    secondaryColor: string,
+    barColor: string,
+    buttonHoverColor: string,
     title: string,
     handlePointerDown: (event:React.PointerEvent<Element>)=>void;
 }
 
-const PanelBar : FC<IPanelBarProps> = ({primaryColor,secondaryColor,title, handlePointerDown}) => {
+const PanelBar : FC<IPanelBarProps> = ({barColor: primaryColor,buttonHoverColor: secondaryColor,title, handlePointerDown}) => {
   return (
     <StyledPanelBar barColor={primaryColor} hoverColor={secondaryColor} onPointerDown={handlePointerDown}>
         <Title>{title}</Title>
@@ -24,8 +24,8 @@ const PanelBar : FC<IPanelBarProps> = ({primaryColor,secondaryColor,title, handl
 
 const StyledPanelBar = styled.div<{barColor: string, hoverColor: string}>`
     --bar-size: 4rem;
-    --hover-color: ${(props) => props.hoverColor};
     --bar-color: ${(props) => props.barColor};
+    --hover-color: ${(props) => props.hoverColor};
     
     position: relative;
     height: var(--bar-size);
