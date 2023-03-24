@@ -9,6 +9,7 @@ export const variables = css`
         //COLORS    
         --color-primary: #FAAB78;
         --color-secondary: #FFDCA9;
+        --color-yellow: #fcf9be;
 
         //TYPOGRAPHY
         --fs-heading: 2.4rem;
@@ -24,5 +25,6 @@ export const variables = css`
             #E86C39 60%,
             #F87C50 80%,
             #F2BB4D 100%);
+        --shadow-primary: 0 .4rem .5rem 0 rgba(0,0,0,.25);
     }
 `;

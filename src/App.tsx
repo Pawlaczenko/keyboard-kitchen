@@ -1,13 +1,14 @@
 import { FC } from "react"
 import styled from "styled-components"
-import Logo from "./components/Logo/Logo";
+import Panel from "./components/Panel/Panel";
 import GlobalStyles from "./styles/globalStyles";
 
 const App : FC = () => {
   return (
     <StyledAppWrapper>
       <GlobalStyles />
-      <Logo />
+
+      <Panel />
     </StyledAppWrapper>
   )
 }

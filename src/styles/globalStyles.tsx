@@ -2,6 +2,7 @@ import { createGlobalStyle } from "styled-components";
 import { reset } from "./reset";
 import { BREAKPOINTS, variables } from "./variables";
 import backOpace from '../assets/back_opace.png';
+import logo from '../assets/logo.svg';
 
 const GlobalStyles = createGlobalStyle`
     ${reset}
@@ -28,6 +29,7 @@ const GlobalStyles = createGlobalStyle`
         font-family: 'rainyhearts';
         background: 
             url(${backOpace}) bottom left / 30% no-repeat,
+            url(${logo}) top 1rem right 1rem no-repeat,
             var(--gradient-background);
     }
 `;
