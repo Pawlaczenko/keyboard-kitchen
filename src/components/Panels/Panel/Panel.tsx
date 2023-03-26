@@ -27,6 +27,7 @@ const Panel : FC<IPanelProps> = ({children,panelTheme,title}) => {
         dragControls={dragControls}
         dragListener={false}
         dragElastic={0}
+        whileDrag={{scale: 1.05}}
     >
         <PanelBar
           barColor={panelTheme.barColor}
@@ -53,6 +54,7 @@ const StyledPanelWrapper = styled(motion.div)`
 
     overflow: hidden;
     resize: both;
+    position: absolute;
 
     display: flex;
     flex-direction: column;
