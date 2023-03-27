@@ -1,0 +1,18 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="100" cy="100" r="100" fill="#F8F8F8"/>
+<circle cx="101.18" cy="101.18" r="73.18" fill="white"/>
+<g filter="url(#filter0_i_56_147)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M152.594 49.1331C139.47 36.6566 121.72 29 102.182 29C61.7646 29 29 61.7646 29 102.182C29 121.72 36.6565 139.47 49.1328 152.594C35.1073 139.261 26.3636 120.425 26.3636 99.5455C26.3636 59.1283 59.1283 26.3636 99.5455 26.3636C120.425 26.3636 139.262 35.1074 152.594 49.1331Z" fill="white"/>
+</g>
+<defs>
+<filter id="filter0_i_56_147" x="26.3636" y="26.3636" width="126.231" height="126.231" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dx="3" dy="3"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.775 0 0 0 0 0.775 0 0 0 0 0.775 0 0 0 1 0"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow_56_147"/>
+</filter>
+</defs>
+</svg>

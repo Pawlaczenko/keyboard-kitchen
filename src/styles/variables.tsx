@@ -12,8 +12,8 @@ export const variables = css`
         --color-yellow: #fcf9be;
 
         //TYPOGRAPHY
-        --fs-heading: 2.4rem;
-        --fs-body: 2rem;
+        --fs-heading: 2rem;
+        --fs-body: 1.6rem;
 
        //GRADIENTS
        --gradient-background: linear-gradient(

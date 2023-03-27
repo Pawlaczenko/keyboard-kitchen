@@ -1,6 +1,5 @@
-import Panel from './Panels/Panel/Panel'
-import { PANEL_THEMES } from '../styles/panelThemes';
-import { PANELS } from '../data/panels';
+import Panel from '../Panel/Panel'
+import { PANELS, PANEL_THEMES } from '../../../data/panels';
 
 const RecipePanel = () => {
   return (

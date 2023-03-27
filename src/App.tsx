@@ -1,26 +1,34 @@
-import { FC, useRef } from "react"
+import { FC, useRef, useState } from "react"
 import styled from "styled-components"
-import Panel from "./components/Panels/Panel/Panel";
-import RecipePanel from "./components/RecipePanel";
-import { ConstraintsContext } from "./context/AppRefContext";
+import RecipePanel from "./components/Panels/RecipePanel/RecipePanel";
+import { ContainerContext } from "./context/ContainerContext";
 import GlobalStyles from "./styles/globalStyles";
+import { DISHES } from './data/dishes';
+import Dish from "./components/Dish/Dish";
+import useContainer from './hooks/useContainer';
 
 const App : FC = () => {
-  const appRef = useRef(null);
-  return (
-    <ConstraintsContext.Provider value={appRef}>
-      <StyledAppWrapper ref={appRef}>
-        <GlobalStyles />
+  const containerContext = useContainer();
 
+  return (
+    <ContainerContext.Provider value={containerContext}>
+      <StyledAppWrapper ref={containerContext.constraints}>
+        <GlobalStyles />
+        <Dish type={DISHES.BLENDER} />
+        <Dish type={DISHES.POT} />
+        <Dish type={DISHES.BOWL} />
+        <Dish type={DISHES.PAN} />
+        <Dish type={DISHES.PLATE} />
         <RecipePanel />
       </StyledAppWrapper>
-    </ConstraintsContext.Provider>
+    </ContainerContext.Provider>
   )
 }
 
 const StyledAppWrapper = styled.div`
   width: 100vw;
   height: 100vh;
+  position: relative;
 `;
 
 export default App
