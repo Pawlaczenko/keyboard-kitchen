@@ -2,8 +2,8 @@ import { motion, useDragControls } from 'framer-motion';
 import React, { FC } from 'react'
 import styled from 'styled-components';
 import PanelBar from './PanelBar';
-import { useConstraintsContext } from '../../../context/AppRefContext';
-import { IPanelTheme } from '../../../styles/panelThemes';
+import DraggableEntity from '../../DraggableEntity/DraggableEntity';
+import { IPanelTheme } from '../../../data/panels';
 
 interface IPanelProps {
   children: React.ReactNode,
@@ -13,22 +13,14 @@ interface IPanelProps {
 
 const Panel : FC<IPanelProps> = ({children,panelTheme,title}) => {
   const dragControls = useDragControls();
-  const constraints = useConstraintsContext();
 
   const startDrag = (event : React.PointerEvent<Element>) => {
     dragControls.start(event, { snapToCursor: false })
   }
 
   return (
-    <StyledPanelWrapper
-        drag
-        dragConstraints={constraints} 
-        dragMomentum={false}
-        dragControls={dragControls}
-        dragListener={false}
-        dragElastic={0}
-        whileDrag={{scale: 1.05}}
-    >
+    <DraggableEntity dragControlsObject={dragControls}>
+      <StyledPanelWrapper>
         <PanelBar
           barColor={panelTheme.barColor}
           buttonHoverColor={panelTheme.buttonHoverColor} 
@@ -38,7 +30,8 @@ const Panel : FC<IPanelProps> = ({children,panelTheme,title}) => {
         <StyledPanelChildren panelColor={panelTheme.panelColor}>
             {children}
         </StyledPanelChildren>
-    </StyledPanelWrapper>
+      </StyledPanelWrapper>
+    </DraggableEntity>
   )
 }
 
@@ -54,7 +47,6 @@ const StyledPanelWrapper = styled(motion.div)`
 
     overflow: hidden;
     resize: both;
-    position: absolute;
 
     display: flex;
     flex-direction: column;

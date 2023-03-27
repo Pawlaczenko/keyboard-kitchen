@@ -12,10 +12,45 @@ export enum DISHES {
     BLENDER = "blender",
 }
 
-export const dishImages = new Map<DISHES,string>([
-    [DISHES.BOWL,bowl],
-    [DISHES.POT,pot],
-    [DISHES.PLATE,plate],
-    [DISHES.PAN,pan],
-    [DISHES.BLENDER,blender],
+export interface IDishTheme {
+    image: string,
+    textColor: "black"|"white"
+}
+
+export const DISH_THEMES = new Map<DISHES,IDishTheme>([
+    [
+        DISHES.BLENDER,
+        {
+            image: blender,
+            textColor: "black"
+        }
+    ],
+    [
+        DISHES.BOWL,
+        {
+            image: bowl,
+            textColor: "black"
+        }
+    ],
+    [
+        DISHES.PAN,
+        {
+            image: pan,
+            textColor: "white"
+        }
+    ],
+    [
+        DISHES.PLATE,
+        {
+            image: plate,
+            textColor: "black"
+        }
+    ],
+    [
+        DISHES.POT,
+        {
+            image: pot,
+            textColor: "white"
+        }
+    ],
 ]);

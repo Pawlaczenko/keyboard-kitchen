@@ -33,3 +33,13 @@
 * Implemented absolute positioning to support stacking of dishes and panels.
 * Added SVG files of dishes as background images.
 * Implemented onDrag animation for both panels and dishes.
+
+### 0.2.3 (27.03.2023)
+### UI Improvements
+* Updated font to Roboto
+* Created ContainerContext to handle constraints and z-index
+* Introduced useContainer hook to manage constraints logic and z-index
+* Moved dragging and positioning logic to a separate component called DraggableEntity
+* Updated dishes' graphics to be more symmetrical and visually appealing
+* Added Dish themes with background images and text colors
+* Moved panel themes to panels.tsx file.

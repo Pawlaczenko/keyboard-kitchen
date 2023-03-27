@@ -1,16 +1,18 @@
-import { FC, useRef } from "react"
+import { FC, useRef, useState } from "react"
 import styled from "styled-components"
 import RecipePanel from "./components/Panels/RecipePanel/RecipePanel";
-import { ConstraintsContext } from "./context/AppRefContext";
+import { ContainerContext } from "./context/ContainerContext";
 import GlobalStyles from "./styles/globalStyles";
 import { DISHES } from './data/dishes';
 import Dish from "./components/Dish/Dish";
+import useContainer from './hooks/useContainer';
 
 const App : FC = () => {
-  const appRef = useRef(null);
+  const containerContext = useContainer();
+
   return (
-    <ConstraintsContext.Provider value={appRef}>
-      <StyledAppWrapper ref={appRef}>
+    <ContainerContext.Provider value={containerContext}>
+      <StyledAppWrapper ref={containerContext.constraints}>
         <GlobalStyles />
         <Dish type={DISHES.BLENDER} />
         <Dish type={DISHES.POT} />
@@ -19,7 +21,7 @@ const App : FC = () => {
         <Dish type={DISHES.PLATE} />
         <RecipePanel />
       </StyledAppWrapper>
-    </ConstraintsContext.Provider>
+    </ContainerContext.Provider>
   )
 }
 

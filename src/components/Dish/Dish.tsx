@@ -1,38 +1,33 @@
 import { motion } from 'framer-motion';
-import React, { FC } from 'react'
+import { FC } from 'react'
 import styled from 'styled-components'
-import { useConstraintsContext } from '../../context/AppRefContext';
 import { flexCenter } from '../../styles/mixins';
-import { DISHES, dishImages } from '../../data/dishes';
+import { DISHES, DISH_THEMES, IDishTheme } from '../../data/dishes';
+import DraggableEntity from '../DraggableEntity/DraggableEntity';
 
 export interface IDishProps {
   type: DISHES,
 }
 
 const Dish : FC<IDishProps> = ({type}) => {
-  const constraints = useConstraintsContext();
+  const dishTheme : IDishTheme = DISH_THEMES.get(type)!;
   return (
-    <StyledDishWrapper
-      drag
-      dragConstraints={constraints} 
-      dragMomentum={false}
-      dragElastic={0}
-      whileDrag={{scale: 1.05}}
-    >
+    <DraggableEntity>
+      <StyledDishWrapper>
         <Title>{type}</Title>
-        <DishBackground backImg={dishImages.get(type)!}>
-          siemka
+        <DishBackground backImg={dishTheme.image} color={dishTheme.textColor}>
+          <p>siemka</p>
         </DishBackground>
-    </StyledDishWrapper>
+      </StyledDishWrapper>
+    </DraggableEntity>
   )
 }
 
 const StyledDishWrapper = styled(motion.div)`
     --dish-size: 20rem;
 
-    width: var(--dish-size);
+    min-width: var(--dish-size);
     height: var(--dish-size);
-    position: absolute;
     cursor: grab;
 
     &:active {
@@ -41,14 +36,16 @@ const StyledDishWrapper = styled(motion.div)`
 `;
 
 const Title = styled.p`
-    font-size: 2rem;
+    font-size: var(--fs-body);
     text-align: center;
+    text-transform: uppercase;
 `;
 
-const DishBackground = styled.figure<{backImg: string}>`
+const DishBackground = styled.figure<{backImg: string, color: string}>`
   width: 100%;
   height: 100%;
-  background: url(${(props)=>props.backImg}) top/contain no-repeat;
+  background: url(${(props)=>props.backImg}) center/contain no-repeat;
+  color: ${(props) => props.color};
 
   ${flexCenter};
 `;
