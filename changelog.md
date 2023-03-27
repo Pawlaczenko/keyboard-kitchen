@@ -43,3 +43,15 @@
 * Updated dishes' graphics to be more symmetrical and visually appealing
 * Added Dish themes with background images and text colors
 * Moved panel themes to panels.tsx file.
+
+### 0.3.0 (27.03.2023)
+### Ingredients
+* Create basic Ingredients system.
+* Added an interface IIngredient that describes the properties of an ingredient.
+* Added an enum UNIT that lists different units of measurement an ingredient can have.
+* Added an enum PORTIONING that lists different ways an ingredient can be portioned.
+* Added a type ingredientKey that lists the names of different ingredients.
+* Populated the INGREDIENTS map with 9 different ingredients with their respective properties such as tags, unit of measurement, portioning options (if any), and price. The ingredients are salt, pepper, egg, sugar, flour, water, apple, milk, and pasta.
+* Assigned values to each property of the ingredients added to the INGREDIENTS map.
+* Tags added to the ingredients include INGREDIENTS_TAG.SPICE, INGREDIENTS_TAG.DIARY, INGREDIENTS_TAG.GRAINS, INGREDIENTS_TAG.FLUID, and INGREDIENTS_TAG.FRUIT.
+* Defined different unit of measurements for each ingredient such as countable, gram, liter, and teaspoon.
