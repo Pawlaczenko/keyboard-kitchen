@@ -1,6 +1,7 @@
 export enum PANELS {
     RECIPE, 
-    FRIDGE
+    FRIDGE,
+    WORKTOP
 }
 
 export interface IPanelTheme {
@@ -27,6 +28,15 @@ export const PANEL_THEMES = new Map<PANELS,IPanelTheme>([
             barColor: "#CBCBCB",
             buttonHoverColor: "#8F8F8F",
             ratio: "1/1.5"
+        }
+    ],
+    [
+        PANELS.WORKTOP,
+        {
+            panelColor: "linear-gradient(#D7B899,#C7996C)",
+            barColor: "#CB9A69",
+            buttonHoverColor: "#A77E55",
+            ratio: "1.5/1"
         }
     ],
 ])

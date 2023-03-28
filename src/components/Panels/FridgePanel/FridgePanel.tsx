@@ -16,23 +16,24 @@ const FridgePanel = () => {
     [INGREDIENTS_TAG.GRAINS,"#7E3200"],
     [INGREDIENTS_TAG.MEAT,"#FF7178"],
     [INGREDIENTS_TAG.OIL,"#E29704"],
-])
+  ])
 
-const getIngredientsByTag = (tag: INGREDIENTS_TAG) : IStoredIngredient[] => {
-  return fridgeStorage.filter((ingredient) => ingredient.ingredient.tags.includes(tag));
+  const getIngredientsByTag = (tag: INGREDIENTS_TAG) : IStoredIngredient[] => {
+    return fridgeStorage.filter((ingredient) => ingredient.ingredient.tags.includes(tag));
+  }
+
+  const printFridgeStorage = () => {
+      return [...fridgeCategories].map(([key, value]) => {
+        const ingredients = getIngredientsByTag(key);
+        return ingredients.length !== 0 && <FridgeGroup groupTitle={key} color={value} ingredients={ingredients} />
+      });
+  }
+
+  return (
+    <Panel title="Fridge" panelTheme={PANEL_THEMES.get(PANELS.FRIDGE)!}>
+        {printFridgeStorage()}
+    </Panel>
+  )
 }
-
-const printFridgeStorage = () => {
-    return [...fridgeCategories].map(([key, value]) => {
-      const ingredients = getIngredientsByTag(key);
-      return ingredients.length !== 0 && <FridgeGroup groupTitle={key} color={value} ingredients={ingredients} />
-    });
-}
-
-return (
-  <Panel title="Fridge" panelTheme={PANEL_THEMES.get(PANELS.FRIDGE)!}>
-      {printFridgeStorage()}
-  </Panel>
-)}
 
 export default FridgePanel

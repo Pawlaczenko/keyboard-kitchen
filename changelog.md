@@ -67,3 +67,10 @@
 * Enabled the scrolling functionality of the Panel Component, when the content overflows on the y-axis.
 * Developed a custom typography helper function that adds plural suffixes to words, improving the readability of the application.
 * Introduced font-weight CSS variables (400, 700)
+
+### 0.3.2 (28.03.2023)
+### WORKTOP
+* Developed a new Worktop Component that displays the ingredients.
+* Implemented a Worktop Clice to manage the state of the Worktop Component and added the Worktop reduver to the global store.
+* Introduced a StoredIngredient Component that creates a reusable label for the stored ingredient.
+* Made StoredIngredients more readable by adjusting the word-spacing and letter-spacing.

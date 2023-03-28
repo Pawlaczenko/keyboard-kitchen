@@ -16,7 +16,6 @@ const Dish : FC<IDishProps> = ({type}) => {
       <StyledDishWrapper>
         <Title>{type}</Title>
         <DishBackground backImg={dishTheme.image} color={dishTheme.textColor}>
-          <p>siemka</p>
         </DishBackground>
       </StyledDishWrapper>
     </DraggableEntity>

@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import fridgeReducer from '../features/fridge/fridgeSlice';
+import worktopReducer from '../features/worktop/worktopSlice';
 
 export const store = configureStore({
   reducer: {
-    fridge: fridgeReducer
+    fridge: fridgeReducer,
+    worktop: worktopReducer
   },
 })
 

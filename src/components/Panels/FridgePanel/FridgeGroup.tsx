@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import styled from 'styled-components';
 import { IStoredIngredient, UNIT } from '../../../data/ingredients';
 import { pluralize } from '../../../helpers/typography.helper';
+import StoredIngredient from '../../StoredIngredient/StoredIngredient';
 
 
 interface IFridgeGroupProps {
@@ -11,24 +12,18 @@ interface IFridgeGroupProps {
 }
 
 const FridgeGroup : FC<IFridgeGroupProps> = ({groupTitle, color, ingredients}) => {
-
-  const getIngredientItem = (ingredient: IStoredIngredient) => {
-    const quantity: number = ingredient.quantity;
-    const unit: UNIT = ingredient.ingredient.unitOfMeasurement;
-    const portioning : string = ingredient.portioned || "";
-    const name: string = ingredient.ingredient.unitOfMeasurement === UNIT.COUNTABLE 
-        ? pluralize(quantity,ingredient.ingredient.name)
-        : ingredient.ingredient.name;
-    
-    return <StyledIngredientsItem>&nbsp;<b>{quantity}</b><i>{unit}</i> {portioning} {name}</StyledIngredientsItem>
-  }
-
   return (
     <StyledIngredientsGroup>
         <StyledIngredientsHeading color={color}>{groupTitle}</StyledIngredientsHeading>
         <StyledIngredientsList>
             {
-                ingredients.map(ingredient => getIngredientItem(ingredient))
+                ingredients.map(ingredient => {
+                  return (
+                    <StyledIngredientsItem>
+                      <StoredIngredient ingredient={ingredient} />
+                    </StyledIngredientsItem>
+                  )
+                })
             }
         </StyledIngredientsList>
     </StyledIngredientsGroup>
@@ -59,8 +54,6 @@ const StyledIngredientsList = styled.ul`
 `;
 
 const StyledIngredientsItem = styled.li`
-    font-size: var(--fs-body);
-
     &::before {
         content: "-"
     }

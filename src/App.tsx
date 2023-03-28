@@ -7,6 +7,7 @@ import { DISHES } from './data/dishes';
 import Dish from "./components/Dish/Dish";
 import useContainer from './hooks/useContainer';
 import FridgePanel from './components/Panels/FridgePanel/FridgePanel';
+import WorktopPanel from "./components/Panels/WorktopPanel/WorktopPanel";
 
 const App : FC = () => {
   const containerContext = useContainer();
@@ -19,7 +20,7 @@ const App : FC = () => {
         {/* Panels */}
 
         <FridgePanel />
-        <Dish type={DISHES.POT} />
+        <WorktopPanel />
         
         {/* /Panels */}
       </StyledAppWrapper>
