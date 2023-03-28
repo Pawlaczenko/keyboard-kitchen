@@ -15,6 +15,9 @@ export const variables = css`
         --fs-heading: 2rem;
         --fs-body: 1.6rem;
 
+        --fw-regular: 400;
+        --fw-bold: 700;
+
        //GRADIENTS
        --gradient-background: linear-gradient(
             to top left,

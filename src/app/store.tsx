@@ -1,7 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
+import fridgeReducer from '../features/fridge/fridgeSlice';
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    fridge: fridgeReducer
+  },
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

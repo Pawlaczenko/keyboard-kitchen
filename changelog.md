@@ -55,3 +55,15 @@
 * Assigned values to each property of the ingredients added to the INGREDIENTS map.
 * Tags added to the ingredients include INGREDIENTS_TAG.SPICE, INGREDIENTS_TAG.DIARY, INGREDIENTS_TAG.GRAINS, INGREDIENTS_TAG.FLUID, and INGREDIENTS_TAG.FRUIT.
 * Defined different unit of measurements for each ingredient such as countable, gram, liter, and teaspoon.
+
+### 0.3.1 (28.03.2023)
+### FRIDGE
+* Developed a new Fridge Component that displays the list of available ingredients.
+* Introduced an IStoredIngredient interface to ensure consistency in the data format used throughout the application.
+* Implemented a Fridge Slice to manage the state of the Fridge Component and added the Fridge reducer to the global store.
+* Updated the typography of the application by using the Kanif font.
+* Modified the IIngredient interface to include a name property, which provides additional information about the ingredient.
+* Added a ratio property to the IPanelTheme interface, which enables dynamic adjustment of the width/height ratio of a panel.
+* Enabled the scrolling functionality of the Panel Component, when the content overflows on the y-axis.
+* Developed a custom typography helper function that adds plural suffixes to words, improving the readability of the application.
+* Introduced font-weight CSS variables (400, 700)

@@ -6,6 +6,7 @@ import GlobalStyles from "./styles/globalStyles";
 import { DISHES } from './data/dishes';
 import Dish from "./components/Dish/Dish";
 import useContainer from './hooks/useContainer';
+import FridgePanel from './components/Panels/FridgePanel/FridgePanel';
 
 const App : FC = () => {
   const containerContext = useContainer();
@@ -14,12 +15,13 @@ const App : FC = () => {
     <ContainerContext.Provider value={containerContext}>
       <StyledAppWrapper ref={containerContext.constraints}>
         <GlobalStyles />
-        <Dish type={DISHES.BLENDER} />
+
+        {/* Panels */}
+
+        <FridgePanel />
         <Dish type={DISHES.POT} />
-        <Dish type={DISHES.BOWL} />
-        <Dish type={DISHES.PAN} />
-        <Dish type={DISHES.PLATE} />
-        <RecipePanel />
+        
+        {/* /Panels */}
       </StyledAppWrapper>
     </ContainerContext.Provider>
   )
