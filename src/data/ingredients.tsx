@@ -38,7 +38,23 @@ export interface IStoredIngredient {
 }
 
 export type ingredientKey = 
-    "salt" | "pepper" | "egg" | "sugar" | "flour" | "water" | "apple" | "milk" | "pasta"
+    "salt" | 
+    "pepper" | 
+    "egg" | 
+    "sugar" | 
+    "flour" | 
+    "water" | 
+    "apple" | 
+    "milk" | 
+    "pasta" | 
+    "bacon" | 
+    "butter" | 
+    "tomato" | 
+    "garlic" | 
+    "onion" | 
+    "olive oil" | 
+    "cream" | 
+    "vegetable broth"
 
 export const INGREDIENTS = new Map<ingredientKey,IIngredient>([
     ["salt",
@@ -104,5 +120,62 @@ export const INGREDIENTS = new Map<ingredientKey,IIngredient>([
         tags: [INGREDIENTS_TAG.GRAINS],
         unitOfMeasurement: UNIT.GRAM,
         price: 0.5
+    }],
+    ["bacon",
+    {
+        name: "bacon",
+        tags: [INGREDIENTS_TAG.MEAT],
+        unitOfMeasurement: UNIT.GRAM,
+        price: 1,
+        portioning: [PORTIONING.CHOPPABLE]
+    }],
+    ["butter",
+    {
+        name: "butter",
+        tags: [INGREDIENTS_TAG.OIL],
+        unitOfMeasurement: UNIT.GRAM,
+        price: 1
+    }],
+    ["tomato",
+    {
+        name: "tomato",
+        tags: [INGREDIENTS_TAG.VEGETABLE],
+        unitOfMeasurement: UNIT.COUNTABLE,
+        price: 1.5
+    }],
+    ["garlic",
+    {
+        name: "garlic",
+        tags: [INGREDIENTS_TAG.VEGETABLE],
+        unitOfMeasurement: UNIT.COUNTABLE,
+        price: 2
+    }],
+    ["onion",
+    {
+        name: "onion",
+        tags: [INGREDIENTS_TAG.VEGETABLE],
+        unitOfMeasurement: UNIT.COUNTABLE,
+        price: 1.75
+    }],
+    ["olive oil",
+    {
+        name: "olive oil",
+        tags: [INGREDIENTS_TAG.OIL],
+        unitOfMeasurement: UNIT.LITR,
+        price: 10
+    }],
+    ["cream",
+    {
+        name: "cream",
+        tags: [INGREDIENTS_TAG.DIARY],
+        unitOfMeasurement: UNIT.GRAM,
+        price: 1
+    }],
+    ["vegetable broth",
+    {
+        name: "vegetable broth",
+        tags: [INGREDIENTS_TAG.DRINK],
+        unitOfMeasurement: UNIT.LITR,
+        price: .5
     }],
 ])

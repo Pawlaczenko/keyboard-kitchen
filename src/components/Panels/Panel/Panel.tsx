@@ -20,14 +20,14 @@ const Panel : FC<IPanelProps> = ({children,panelTheme,title}) => {
 
   return (
     <DraggableEntity dragControlsObject={dragControls}>
-      <StyledPanelWrapper ratio={panelTheme.ratio}>
+      <StyledPanelWrapper panelTheme={panelTheme}>
         <PanelBar
           barColor={panelTheme.barColor}
           buttonHoverColor={panelTheme.buttonHoverColor} 
           title={title}
           handlePointerDown={startDrag}
         />
-        <StyledPanelChildren panelColor={panelTheme.panelColor} accentColor={panelTheme.barColor}>
+        <StyledPanelChildren>
             {children}
         </StyledPanelChildren>
       </StyledPanelWrapper>
@@ -35,15 +35,22 @@ const Panel : FC<IPanelProps> = ({children,panelTheme,title}) => {
   )
 }
 
-const StyledPanelWrapper = styled(motion.div)<{ratio?: string}>`
+const StyledPanelWrapper = styled(motion.div)<{panelTheme: IPanelTheme}>`
     --panel-min-size: 15rem;
-    --panel-default-size: 32rem;
+    --panel-default-size: 35rem;
     --panel-radius: 2rem;
+
+    ${({panelTheme}) => `
+      --theme-ratio: ${panelTheme.ratio || "1/1"};
+      --theme-panel: ${panelTheme.panelColor};
+      --theme-bar: ${panelTheme.barColor};
+      --theme-hover: ${panelTheme.buttonHoverColor};
+    `}
 
     min-width: var(--panel-min-size);
     width: var(--panel-default-size);
     min-height: var(--panel-min-size);
-    aspect-ratio: ${(props) => props.ratio || "1/1"};
+    aspect-ratio: var(--theme-ratio);
 
     overflow: hidden;
     resize: both;
@@ -55,13 +62,12 @@ const StyledPanelWrapper = styled(motion.div)<{ratio?: string}>`
     box-shadow: var(--shadow-primary);
 `;
 
-const StyledPanelChildren = styled.div<{panelColor: string, accentColor: string}>`
+const StyledPanelChildren = styled.div`
   flex: 1;
   padding: 1rem 2rem;
   overflow-y: scroll;
 
-  --accent-color: ${(props) => props.accentColor};
-  background: ${(props) => props.panelColor};
+  background: var(--theme-panel);
 
   ::-webkit-scrollbar {
     width: 1.5rem;
@@ -72,7 +78,7 @@ const StyledPanelChildren = styled.div<{panelColor: string, accentColor: string}
   }
 
   ::-webkit-scrollbar-thumb {
-    background: var(--accent-color);
+    background: var(--theme-hover);
     border-radius: 1rem;
   }
 `;

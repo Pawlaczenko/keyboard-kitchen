@@ -8,6 +8,8 @@ import Dish from "./components/Dish/Dish";
 import useContainer from './hooks/useContainer';
 import FridgePanel from './components/Panels/FridgePanel/FridgePanel';
 import WorktopPanel from "./components/Panels/WorktopPanel/WorktopPanel";
+import RecipeBookPanel from './components/Panels/RecipeBookPanel/RecipeBookPanel';
+import { RECIPES } from './data/recipes';
 
 const App : FC = () => {
   const containerContext = useContainer();
@@ -19,8 +21,9 @@ const App : FC = () => {
 
         {/* Panels */}
 
-        <FridgePanel />
-        <WorktopPanel />
+        <RecipeBookPanel />
+        <RecipePanel recipe={RECIPES.get("Tomato Soup")!} />
+        <RecipePanel recipe={RECIPES.get("Spaghetti Carbonara")!} />
         
         {/* /Panels */}
       </StyledAppWrapper>

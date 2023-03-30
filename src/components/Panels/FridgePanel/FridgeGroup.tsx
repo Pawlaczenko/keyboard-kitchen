@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import styled from 'styled-components';
 import { IStoredIngredient, UNIT } from '../../../data/ingredients';
 import { pluralize } from '../../../helpers/typography.helper';
+import List from '../../List/List';
 import StoredIngredient from '../../StoredIngredient/StoredIngredient';
 
 
@@ -12,26 +13,17 @@ interface IFridgeGroupProps {
 }
 
 const FridgeGroup : FC<IFridgeGroupProps> = ({groupTitle, color, ingredients}) => {
+  const groupStoredIngredients = ingredients.map(ingredient => <StoredIngredient ingredient={ingredient} />);
   return (
     <StyledIngredientsGroup>
         <StyledIngredientsHeading color={color}>{groupTitle}</StyledIngredientsHeading>
-        <StyledIngredientsList>
-            {
-                ingredients.map(ingredient => {
-                  return (
-                    <StyledIngredientsItem>
-                      <StoredIngredient ingredient={ingredient} />
-                    </StyledIngredientsItem>
-                  )
-                })
-            }
-        </StyledIngredientsList>
+        <List type="ul" items={groupStoredIngredients} />
     </StyledIngredientsGroup>
   )
 }
 
 const StyledIngredientsGroup = styled.div`
-  
+  margin-bottom: 1.5rem;
 `;
 
 const StyledIngredientsHeading = styled.h3<{color: string}>`
@@ -43,20 +35,10 @@ const StyledIngredientsHeading = styled.h3<{color: string}>`
   color: black;
 
   position: relative;
-  background-color: var(--accent-color);
+  margin-bottom: 1rem;
+  background-color: var(--theme-hover);
   border-left: 1rem solid ${(props)=> props.color};
   border-right: 1rem solid transparent;
-`;
-
-const StyledIngredientsList = styled.ul`
-    padding: 1rem 1.5rem;
-    list-style-type: none;
-`;
-
-const StyledIngredientsItem = styled.li`
-    &::before {
-        content: "-"
-    }
 `;
 
 export default FridgeGroup

@@ -11,6 +11,10 @@ interface IDraggableEntityProps {
 const DraggableEntity : FC<IDraggableEntityProps> = ({children,dragControlsObject}) => {
   const containerContext = useContainerContext();
   const [zindex,setZIndex] = useState(containerContext.zIndexStack);
+
+  const handleZIndexChange = () => {
+    setZIndex(containerContext.zIndexStack+1);
+  }
   
   useEffect(()=>{
     containerContext.incrementzIndexStack(zindex);
@@ -25,7 +29,7 @@ const DraggableEntity : FC<IDraggableEntityProps> = ({children,dragControlsObjec
         dragListener={(dragControlsObject === undefined)}
         dragElastic={0}
         whileDrag={{scale: 1.02}}
-        onDragStart={()=>{setZIndex(containerContext.zIndexStack+1)}}
+        onDragStart={handleZIndexChange}
         indexStack={zindex}
     >
         {children}
