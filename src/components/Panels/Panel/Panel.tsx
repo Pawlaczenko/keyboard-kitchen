@@ -3,16 +3,20 @@ import React, { FC } from 'react'
 import styled from 'styled-components';
 import PanelBar from './PanelBar';
 import DraggableEntity from '../../DraggableEntity/DraggableEntity';
-import { IPanelTheme } from '../../../data/panels';
+import { IPanelTheme, PANELS, PANEL_THEMES } from '../../../data/panels';
+import { useDispatch } from 'react-redux';
+import { toggleOpenPanel } from '../../../features/desktop/desktopSlice';
 
 interface IPanelProps {
   children: React.ReactNode,
-  panelTheme: IPanelTheme,
-  title: string
+  panelType: PANELS,
+  title: string,
 }
 
-const Panel : FC<IPanelProps> = ({children,panelTheme,title}) => {
+const Panel : FC<IPanelProps> = ({children,panelType,title}) => {
   const dragControls = useDragControls();
+  const panelTheme = PANEL_THEMES.get(panelType)!;
+  const handlePanelClose = useDispatch();
 
   const startDrag = (event : React.PointerEvent<Element>) => {
     dragControls.start(event, { snapToCursor: false })
@@ -22,10 +26,9 @@ const Panel : FC<IPanelProps> = ({children,panelTheme,title}) => {
     <DraggableEntity dragControlsObject={dragControls}>
       <StyledPanelWrapper panelTheme={panelTheme}>
         <PanelBar
-          barColor={panelTheme.barColor}
-          buttonHoverColor={panelTheme.buttonHoverColor} 
           title={title}
           handlePointerDown={startDrag}
+          handlePanelClose={()=>handlePanelClose(toggleOpenPanel(panelType))}
         />
         <StyledPanelChildren>
             {children}
@@ -45,6 +48,7 @@ const StyledPanelWrapper = styled(motion.div)<{panelTheme: IPanelTheme}>`
       --theme-panel: ${panelTheme.panelColor};
       --theme-bar: ${panelTheme.barColor};
       --theme-hover: ${panelTheme.buttonHoverColor};
+      --theme-text: ${panelTheme.textColor || "black"};
     `}
 
     min-width: var(--panel-min-size);

@@ -18,7 +18,7 @@ const StoredIngredient : FC<IStoredIngredientProps> = ({ingredient,uppercase}) =
     
     return(
         <StyledStoredIngredient>
-            <StyledQuantity>{quantity} {unit}</StyledQuantity>
+            <StyledQuantity>{quantity}{unit}</StyledQuantity>
             <StyledPortioning> {portioning}</StyledPortioning>
             <StyledName uppercase={uppercase}> {name}</StyledName>
         </StyledStoredIngredient>

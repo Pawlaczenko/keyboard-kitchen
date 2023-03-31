@@ -10,7 +10,7 @@ import StoredIngredient from '../../StoredIngredient/StoredIngredient';
 const WorktopPanel = () => {
   const worktopSelector = useSelector((state: RootState) => state.worktop);
   return (
-    <Panel title='worktop' panelTheme={PANEL_THEMES.get(PANELS.WORKTOP)!}>
+    <Panel title='worktop' panelType={PANELS.WORKTOP}>
         <StyledWorktopContainer>
             {
                 worktopSelector.map(ingredient => {

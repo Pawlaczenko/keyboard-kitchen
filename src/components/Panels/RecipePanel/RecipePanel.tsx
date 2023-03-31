@@ -20,7 +20,7 @@ const RecipePanel:FC<{recipe:IRecipe}> = ({recipe}) => {
     return ingredients
   }
   return (
-    <Panel title={`${recipe.name} RECIPE`} panelTheme={PANEL_THEMES.get(PANELS.RECIPE)!}>
+    <Panel title={`${recipe.name} RECIPE`} panelType={PANELS.RECIPE} >
         <StyledRecipeTitle>Ingredients:</StyledRecipeTitle>
         <List type="ul" items={getIngredientsNames()} />
         <StyledRecipeTitle>Instructions:</StyledRecipeTitle>

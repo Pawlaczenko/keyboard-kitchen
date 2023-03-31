@@ -8,7 +8,7 @@ const RecipeBookPanel = () => {
   
   const recipes = [...RECIPES.keys()].sort((a,b)=>a.localeCompare(b)); // Get all recipes names and sort them alphabetically
   return (
-    <Panel title="Recipe Book" panelTheme={PANEL_THEMES.get(PANELS.RECIPEBOOK)!}>
+    <Panel title="Recipe Book" panelType={PANELS.RECIPEBOOK}>
         <List type="ol" items={recipes} />
     </Panel>
   )

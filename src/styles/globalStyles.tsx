@@ -16,8 +16,8 @@ const GlobalStyles = createGlobalStyle`
         }
 
         @font-face {
-            font-family: 'Kanit';
-            src: url('/fonts/kanit.ttf');
+            font-family: 'rainyhearts';
+            src: url('/fonts/rainyhearts.ttf');
         }
     }
 
@@ -26,7 +26,7 @@ const GlobalStyles = createGlobalStyle`
         min-height: 100vh;
 
         font-size: var(--fs-body);
-        font-family: 'Kanit';
+        font-family: 'rainyhearts';
         background: 
             url(${backOpace}) bottom left / 30% no-repeat,
             url(${logo}) top 1rem right 1rem no-repeat,
