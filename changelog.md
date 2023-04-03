@@ -103,3 +103,11 @@
 * Separated drag constraints and z-index handling into distinct contexts
 * Improved the rerendering of DraggableEntity
 * Moved handlePanelClose function to separate panels and passed it as a parameter to the Panel component
+
+## 0.4.2 (03.04.2023)
+### INTERPRETING COMMANDS
+* The console component has been updated to a fixed element on the side of the application.
+* The app has undergone significant visual changes due to the console update.
+* A basic command interpreter has been implemented, with plans for future refactoring.
+* The following commands have been added: OPEN, CLOSE, GET, STASH, and CLEAR.
+* A new commandResponse type has been introduced to provide response information, including code and message, when interpreting a command.

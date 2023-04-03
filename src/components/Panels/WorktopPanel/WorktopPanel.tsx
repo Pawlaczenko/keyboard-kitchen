@@ -11,8 +11,16 @@ import { toggleOpenPanel } from '../../../features/desktop/desktopSlice';
 const WorktopPanel = () => {
   const worktopSelector = useSelector((state: RootState) => state.worktop);
   const dispatch = useDispatch();
+
+  const handlePanelClose = () => {
+    dispatch(toggleOpenPanel({
+      panelType: PANELS.WORKTOP,
+      opened: false
+    }))
+  }
+
   return (
-    <Panel title='worktop' panelType={PANELS.WORKTOP} handlePanelClose={()=>dispatch(toggleOpenPanel(PANELS.WORKTOP))}>
+    <Panel title='worktop' panelType={PANELS.WORKTOP} handlePanelClose={handlePanelClose}>
         <StyledWorktopContainer> 
             {
                 worktopSelector.map(ingredient => {

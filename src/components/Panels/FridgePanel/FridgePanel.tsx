@@ -33,8 +33,18 @@ const FridgePanel = () => {
       });
   }
 
+  const handlePanelClose = () => {
+    dispatch(toggleOpenPanel({
+      panelType: PANELS.FRIDGE,
+      opened: false
+    }))
+  }
+
   return (
-    <Panel title="Fridge" panelType={PANELS.FRIDGE} handlePanelClose={()=>dispatch(toggleOpenPanel(PANELS.FRIDGE))}>
+    <Panel 
+      title="Fridge" 
+      panelType={PANELS.FRIDGE} 
+      handlePanelClose={handlePanelClose}>
         {printFridgeStorage()}
     </Panel>
   )

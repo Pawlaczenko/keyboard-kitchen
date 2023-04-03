@@ -22,9 +22,9 @@ const initialState: DesktopState = {
     dishes: {
         [DISHES.BLENDER]:[],
         [DISHES.BOWL]:[],
-        [DISHES.PAN]:[1],
+        [DISHES.PAN]:[],
         [DISHES.PLATE]:[],
-        [DISHES.POT]:[1],
+        [DISHES.POT]:[],
     },
     recipes: [],
     panels: {
@@ -38,8 +38,8 @@ export const desktopSlice = createSlice({
     name: "desktop",
     initialState,
     reducers: {
-        toggleOpenPanel: (state, action: PayloadAction<PANELS>) => {
-            state.panels[action.payload] = !state.panels[action.payload];
+        toggleOpenPanel: (state, action: PayloadAction<{panelType: PANELS, opened?: boolean}>) => {
+            state.panels[action.payload.panelType] = action.payload.opened;
         },
         displayRecipe: (state, action: PayloadAction<{recipe: recipeKey,display:boolean}>) => {
             const name = action.payload.recipe;
@@ -69,5 +69,5 @@ export const desktopSlice = createSlice({
     },
 });
 
-export const { toggleOpenPanel,displayRecipe,displayDish} = desktopSlice.actions;
+export const { toggleOpenPanel,displayRecipe,displayDish,removeDish} = desktopSlice.actions;
 export default desktopSlice.reducer;

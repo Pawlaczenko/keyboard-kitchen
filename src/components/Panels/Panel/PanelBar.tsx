@@ -2,11 +2,12 @@ import React, { FC } from 'react'
 import styled from 'styled-components';
 import { flexCenter, flexStart } from '../../../styles/mixins';
 import { FiX } from "react-icons/fi";
+import { PANELS } from '../../../data/panels';
 
 interface IPanelBarProps {
     title: string,
     handlePointerDown: (event:React.PointerEvent<Element>)=>void;
-    handlePanelClose?: ()=>{}
+    handlePanelClose?: ()=>void
 }
 
 const PanelBar : FC<IPanelBarProps> = ({title, handlePointerDown,handlePanelClose}) => {

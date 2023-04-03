@@ -2,8 +2,7 @@ export enum PANELS {
     RECIPE="recipe", 
     FRIDGE="fridge",
     WORKTOP="worktop",
-    RECIPEBOOK="recipebook",
-    CONSOLE="console"
+    RECIPEBOOK="recipe book",
 }
 
 export interface IPanelTheme {
@@ -12,6 +11,11 @@ export interface IPanelTheme {
     buttonHoverColor: string,
     textColor?: string,
     ratio?: string
+}
+
+export const getPanelByName = (name: string) : PANELS => {
+    const panelName = name.toUpperCase().replace(" ","") as keyof typeof PANELS;
+    return PANELS[panelName];
 }
 
 export const PANEL_THEMES = new Map<PANELS,IPanelTheme>([
@@ -49,16 +53,6 @@ export const PANEL_THEMES = new Map<PANELS,IPanelTheme>([
             barColor: "#609966",
             buttonHoverColor: "#9DC08B",
             ratio: "1/1.2"
-        }
-    ],
-    [
-        PANELS.CONSOLE,
-        {
-            panelColor: "#000000",
-            barColor: "#3C3C3C",
-            buttonHoverColor: "#FFDCA9",
-            textColor: "#FAAB78",
-            ratio: "1/1.6"
         }
     ]
 ]);

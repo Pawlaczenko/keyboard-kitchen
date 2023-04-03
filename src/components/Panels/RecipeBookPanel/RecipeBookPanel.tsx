@@ -8,10 +8,17 @@ import React from 'react';
 
 const RecipeBookPanel = () => {
   const dispatch = useDispatch();
+
+  const handlePanelClose = () => {
+    dispatch(toggleOpenPanel({
+      panelType: PANELS.RECIPEBOOK,
+      opened: false
+    }))
+  }
   
   const recipes = [...RECIPES.keys()].sort((a,b)=>a.localeCompare(b)); // Get all recipes names and sort them alphabetically
   return (
-    <Panel title="Recipe Book" panelType={PANELS.RECIPEBOOK} handlePanelClose={()=>dispatch(toggleOpenPanel(PANELS.RECIPEBOOK))}>
+    <Panel title="Recipe Book" panelType={PANELS.RECIPEBOOK} handlePanelClose={handlePanelClose}>
         <List type="ol" items={recipes} />
     </Panel>
   )

@@ -9,7 +9,7 @@ interface IPanelProps {
   children: React.ReactNode,
   panelType: PANELS,
   title: string,
-  handlePanelClose?: ()=>{};
+  handlePanelClose?: ()=>void;
 }
 
 const Panel : FC<IPanelProps> = ({children,panelType,title,handlePanelClose}) => {
@@ -39,7 +39,7 @@ const Panel : FC<IPanelProps> = ({children,panelType,title,handlePanelClose}) =>
 const StyledPanelWrapper = styled(motion.div)<{panelTheme: IPanelTheme}>`
     --panel-min-size: 15rem;
     --panel-default-size: 35rem;
-    --panel-radius: 2rem;
+    --panel-radius: .5rem;
 
     ${({panelTheme}) => `
       --theme-ratio: ${panelTheme.ratio || "1/1"};

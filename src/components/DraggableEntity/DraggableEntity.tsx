@@ -31,7 +31,7 @@ const DraggableEntity : FC<IDraggableEntityProps> = ({children,dragControlsObjec
         dragMomentum={false}
         dragControls={dragControlsObject}
         dragListener={(dragControlsObject === undefined)}
-        dragElastic={0}
+        dragElastic={.1}
         whileDrag={{scale: 1.02}}
         onDragStart={handleZIndexChange}
         indexStack={zindex.current}

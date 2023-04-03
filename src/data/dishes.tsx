@@ -12,6 +12,11 @@ export enum DISHES {
     BLENDER = "blender",
 }
 
+export const getDishByName = (name: string) : DISHES => {
+    const dishName = name.toUpperCase().replace(" ","") as keyof typeof DISHES;
+    return DISHES[dishName];
+}
+
 export type DisplayedDish = {
     dishType: DISHES,
     id: number
