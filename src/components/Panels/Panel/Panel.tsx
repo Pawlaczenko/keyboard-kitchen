@@ -4,19 +4,17 @@ import styled from 'styled-components';
 import PanelBar from './PanelBar';
 import DraggableEntity from '../../DraggableEntity/DraggableEntity';
 import { IPanelTheme, PANELS, PANEL_THEMES } from '../../../data/panels';
-import { useDispatch } from 'react-redux';
-import { toggleOpenPanel } from '../../../features/desktop/desktopSlice';
 
 interface IPanelProps {
   children: React.ReactNode,
   panelType: PANELS,
   title: string,
+  handlePanelClose?: ()=>{};
 }
 
-const Panel : FC<IPanelProps> = ({children,panelType,title}) => {
+const Panel : FC<IPanelProps> = ({children,panelType,title,handlePanelClose}) => {
   const dragControls = useDragControls();
   const panelTheme = PANEL_THEMES.get(panelType)!;
-  const handlePanelClose = useDispatch();
 
   const startDrag = (event : React.PointerEvent<Element>) => {
     dragControls.start(event, { snapToCursor: false })
@@ -28,7 +26,7 @@ const Panel : FC<IPanelProps> = ({children,panelType,title}) => {
         <PanelBar
           title={title}
           handlePointerDown={startDrag}
-          handlePanelClose={()=>handlePanelClose(toggleOpenPanel(panelType))}
+          handlePanelClose={handlePanelClose}
         />
         <StyledPanelChildren>
             {children}
@@ -87,4 +85,4 @@ const StyledPanelChildren = styled.div`
   }
 `;
 
-export default Panel
+export default React.memo(Panel)

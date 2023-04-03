@@ -98,4 +98,4 @@ const StyledConsoleInput = styled.input`
     }
 `;
 
-export default Console
+export default React.memo(Console)

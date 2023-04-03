@@ -4,18 +4,21 @@ import styled from 'styled-components'
 import { flexCenter } from '../../styles/mixins';
 import { DISHES, DISH_THEMES, IDishTheme } from '../../data/dishes';
 import DraggableEntity from '../DraggableEntity/DraggableEntity';
+import React from 'react';
 
 export interface IDishProps {
   type: DISHES,
+  id: number
 }
 
-const Dish : FC<IDishProps> = ({type}) => {
+const Dish : FC<IDishProps> = ({type, id}) => {
   const dishTheme : IDishTheme = DISH_THEMES.get(type)!;
   return (
     <DraggableEntity>
       <StyledDishWrapper>
-        <Title>{type}</Title>
+        <Title>{type} {id}</Title>
         <DishBackground backImg={dishTheme.image} color={dishTheme.textColor}>
+          
         </DishBackground>
       </StyledDishWrapper>
     </DraggableEntity>
@@ -49,4 +52,4 @@ const DishBackground = styled.figure<{backImg: string, color: string}>`
   ${flexCenter};
 `;
 
-export default Dish
+export default React.memo(Dish)

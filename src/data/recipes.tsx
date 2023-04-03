@@ -9,7 +9,7 @@ enum METHODS {
 }
 
 export interface IRecipe {
-    name: dishKey,
+    name: recipeKey,
     steps: IRecipeSteps[],
     text: string[]
 }
@@ -28,9 +28,9 @@ const getStoredIngredient = (name: ingredientKey, quantity: number, portioned?: 
     return ingredient;
 }
 
-type dishKey = "Spaghetti Carbonara" | "Tomato Soup"
+export type recipeKey = "Spaghetti Carbonara" | "Tomato Soup"
 
-export const RECIPES = new Map<dishKey,IRecipe>([
+export const RECIPES = new Map<recipeKey,IRecipe>([
     [
         "Spaghetti Carbonara",
         {

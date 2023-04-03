@@ -1,17 +1,19 @@
 import React from 'react'
 import Panel from '../Panel/Panel';
-import { PANELS, PANEL_THEMES } from '../../../data/panels';
-import { useSelector } from 'react-redux';
+import { PANELS } from '../../../data/panels';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../app/store';
 import styled from 'styled-components';
 import { flexCenter } from '../../../styles/mixins';
 import StoredIngredient from '../../StoredIngredient/StoredIngredient';
+import { toggleOpenPanel } from '../../../features/desktop/desktopSlice';
 
 const WorktopPanel = () => {
   const worktopSelector = useSelector((state: RootState) => state.worktop);
+  const dispatch = useDispatch();
   return (
-    <Panel title='worktop' panelType={PANELS.WORKTOP}>
-        <StyledWorktopContainer>
+    <Panel title='worktop' panelType={PANELS.WORKTOP} handlePanelClose={()=>dispatch(toggleOpenPanel(PANELS.WORKTOP))}>
+        <StyledWorktopContainer> 
             {
                 worktopSelector.map(ingredient => {
                     return <StoredIngredient uppercase ingredient={ingredient} />
@@ -29,4 +31,4 @@ const StyledWorktopContainer = styled.div`
     flex-direction: column;
 `;
 
-export default WorktopPanel
+export default React.memo(WorktopPanel)

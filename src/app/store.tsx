@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit'
 import fridgeReducer from '../features/fridge/fridgeSlice';
 import desktopReducer from '../features/desktop/desktopSlice';
 import worktopReducer from '../features/worktop/worktopSlice';
+import zindexReducer from '../features/zindex/zindexSlice';
 
 export const store = configureStore({
   reducer: {
     desktop: desktopReducer,
     fridge: fridgeReducer,
     worktop: worktopReducer,
+    zindex: zindexReducer
   },
 })
 

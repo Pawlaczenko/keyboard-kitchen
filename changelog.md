@@ -94,3 +94,12 @@
 * Created a Desktop context to hold information about displayed panels/dishes.
 * Every Panel now takes a panelType property. ClosePanel function and theme are taken from the Panel component.
 * Removed MinimizeWindow Button - indefinitely
+
+## 0.4.1 (03.04.2023)
+### THEY'RE MULTIPLYING
+* Added functionality to display all dishes and recipes in state
+* Implemented an ID parameter in the dish component
+* Fixed a bug that caused draggableEntity to change constraints momentarily
+* Separated drag constraints and z-index handling into distinct contexts
+* Improved the rerendering of DraggableEntity
+* Moved handlePanelClose function to separate panels and passed it as a parameter to the Panel component

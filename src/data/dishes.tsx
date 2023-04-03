@@ -12,6 +12,11 @@ export enum DISHES {
     BLENDER = "blender",
 }
 
+export type DisplayedDish = {
+    dishType: DISHES,
+    id: number
+}
+
 export interface IDishTheme {
     image: string,
     textColor: "black"|"white"

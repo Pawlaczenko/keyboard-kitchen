@@ -1,17 +1,20 @@
 import Panel from '../Panel/Panel'
 import { PANELS, PANEL_THEMES } from '../../../data/panels';
 import { RECIPES } from '../../../data/recipes';
-import styled from 'styled-components';
 import List from '../../List/List';
+import { useDispatch } from 'react-redux';
+import { toggleOpenPanel } from '../../../features/desktop/desktopSlice';
+import React from 'react';
 
 const RecipeBookPanel = () => {
+  const dispatch = useDispatch();
   
   const recipes = [...RECIPES.keys()].sort((a,b)=>a.localeCompare(b)); // Get all recipes names and sort them alphabetically
   return (
-    <Panel title="Recipe Book" panelType={PANELS.RECIPEBOOK}>
+    <Panel title="Recipe Book" panelType={PANELS.RECIPEBOOK} handlePanelClose={()=>dispatch(toggleOpenPanel(PANELS.RECIPEBOOK))}>
         <List type="ol" items={recipes} />
     </Panel>
   )
 }
 
-export default RecipeBookPanel
+export default React.memo(RecipeBookPanel)

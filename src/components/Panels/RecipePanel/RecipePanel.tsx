@@ -1,12 +1,17 @@
 import Panel from '../Panel/Panel'
 import { PANELS, PANEL_THEMES } from '../../../data/panels';
-import { IRecipe } from '../../../data/recipes';
+import { IRecipe, RECIPES, recipeKey } from '../../../data/recipes';
 import { FC } from 'react';
 import styled from 'styled-components';
 import List from '../../List/List';
 import StoredIngredient from '../../StoredIngredient/StoredIngredient';
+import { useDispatch } from 'react-redux';
+import { displayRecipe } from '../../../features/desktop/desktopSlice';
+import React from 'react';
 
-const RecipePanel:FC<{recipe:IRecipe}> = ({recipe}) => {
+const RecipePanel:FC<{recipeName:recipeKey}> = ({recipeName}) => {
+  const recipe = RECIPES.get(recipeName)!;
+  const handlePanelClose = useDispatch();
   const getIngredientsNames = ():React.ReactNode[] => {
     const ingredients: React.ReactNode[] = [];
 
@@ -20,7 +25,10 @@ const RecipePanel:FC<{recipe:IRecipe}> = ({recipe}) => {
     return ingredients
   }
   return (
-    <Panel title={`${recipe.name} RECIPE`} panelType={PANELS.RECIPE} >
+    <Panel 
+      title={`${recipe.name} RECIPE`} 
+      panelType={PANELS.RECIPE} 
+      handlePanelClose={()=>handlePanelClose(displayRecipe({recipe: recipeName,display: false}))}>
         <StyledRecipeTitle>Ingredients:</StyledRecipeTitle>
         <List type="ul" items={getIngredientsNames()} />
         <StyledRecipeTitle>Instructions:</StyledRecipeTitle>
@@ -36,4 +44,4 @@ const StyledRecipeTitle = styled.h3`
   }
 `;
 
-export default RecipePanel
+export default React.memo(RecipePanel)
