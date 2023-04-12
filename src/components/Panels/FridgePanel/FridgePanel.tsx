@@ -36,7 +36,7 @@ const FridgePanel = () => {
   const handlePanelClose = () => {
     dispatch(toggleOpenPanel({
       panelType: PANELS.FRIDGE,
-      opened: false
+      opened:false
     }))
   }
 

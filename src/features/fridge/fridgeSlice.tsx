@@ -7,12 +7,7 @@ export type FridgeState = {
 };
 
 const initialState: FridgeState = {
-    ingredients: [
-        {
-            ingredient: INGREDIENTS.get("egg")!,
-            quantity: 4,
-        },
-    ]
+    ingredients: []
 };
 
 export const fridgeSlice = createSlice({

@@ -4,16 +4,7 @@ import { IStoredIngredient, INGREDIENTS } from '../../data/ingredients';
 
 export type WorktopState = IStoredIngredient[];
 
-const initialState: WorktopState = [
-    {
-        ingredient: INGREDIENTS.get("pasta")!,
-        quantity: 125,
-    },
-    {
-        ingredient: INGREDIENTS.get("water")!,
-        quantity: 10,
-    },
-];
+const initialState: WorktopState = [];
 
 export const worktopSlice = createSlice({
     name: "worktop",

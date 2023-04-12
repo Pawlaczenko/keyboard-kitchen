@@ -1,19 +1,40 @@
-import React, { FC, useState } from 'react'
-import Panel from '../Panels/Panel/Panel';
-import { PANELS, getPanelByName } from '../../data/panels';
+import { FC, useEffect, useState } from 'react'
 import logo from '../../assets/logo.svg';
 import styled from 'styled-components';
-import { useRef,useEffect } from 'react';
-import { COMMAND, COMMAND_CODE, commandLine, commandResponse, sendResponse } from '../../data/commands';
-import { useDispatch } from 'react-redux';
-import { displayDish, removeDish, toggleOpenPanel } from '../../features/desktop/desktopSlice';
-import CommandLine from './CommandLine';
-import { DISHES, getDishByName } from '../../data/dishes';
+import { useRef } from 'react';
+import { commandResponse } from '../../data/commands';
+import { useDispatch, useSelector } from 'react-redux';
+import CommandLine, { ICommandLine } from './CommandLine';
+import { RootState } from '../../app/store';
+import { runCommandInterpreter } from './commandInterpreter';
+
 
 const Console : FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [consoleLog,setConsoleLog] = useState<commandLine[]>([]);
+  const [commandLog,setCommandLog] = useState<ICommandLine[]>([]);
+  const [commandHistory,setCommandHistory] = useState<string[]>([]);
+  const [previousCommandIndex,setPreviousCommandIndex] = useState<number>(0);
+  const COMMANDS_LOG_CAPACITY = 70;
+  const COMMANDS_HISTORY_CAPACITY = 50;
+
+  const desktopState = useSelector((state: RootState) => state.desktop)
   const dispatch = useDispatch();
+
+  const handleAddCommandLog = (commandLine:ICommandLine) => {
+    if(commandLog.length + 1 === COMMANDS_LOG_CAPACITY){
+        setCommandLog(arr => [...arr.slice(1), commandLine]); 
+    } else {
+        setCommandLog(arr => [...arr, commandLine]);
+    }
+  }
+
+  const handleAddCommandHistory = (command:string) => {
+    if(commandLog.length + 1 === COMMANDS_HISTORY_CAPACITY){
+        setCommandHistory(arr => [...arr.slice(1), command]); 
+    } else {
+        setCommandHistory(arr => [...arr, command]);
+    }
+  }
 
   const focusConsole = () => {
     inputRef.current && inputRef.current.focus();
@@ -25,88 +46,65 @@ const Console : FC = () => {
         const command = inputRef.current.value;
         
         //interpret the command and get a response
-        const res : commandResponse | undefined = runCommandInterpreter(command);
+        const res : commandResponse | undefined = runCommandInterpreter({
+            input: command,
+            currentDesktopState: desktopState,
+            dispatch: dispatch,
+            clearConsoleAction: ()=>{setCommandLog([])}
+        });
         if(res){
-            const cmdLine : commandLine = {
+            const cmdLine : ICommandLine = {
                 command: command,
                 info: res.message,
                 infoType: res.code
             }
-            setConsoleLog(oldArray => [...oldArray,cmdLine]);
+            handleAddCommandLog(cmdLine);
+            handleAddCommandHistory(cmdLine.command);
         }
-
         //clear the input
         inputRef.current.value="";
-    } 
+    }
   }
 
-  const clearConsole = () => {
-    setConsoleLog([]);
+  const getPreviousCommand = (direction:1|-1) => {
+    if(inputRef.current){
+        const newIndex = Math.max(0,previousCommandIndex+direction);
+        if(newIndex>=commandHistory.length){
+            inputRef.current.value = "";
+        } else {
+            inputRef.current.value = commandHistory[newIndex];
+        }        
+        setPreviousCommandIndex(Math.min(newIndex,commandHistory.length));
+    }
   }
 
-  const handleKeyDown = (e:KeyboardEvent) => {
+  useEffect(()=>{
+    setPreviousCommandIndex(commandHistory.length);
+  },[commandHistory])
+
+  const handleKeyDown = (e:React.KeyboardEvent<HTMLInputElement>) => {
     switch(e.key){
         case 'Enter':
             enterCommand();
             break;
-    }
-  }
-
-  const runCommandInterpreter = (command:string) : commandResponse | undefined => {
-    const commandKeys = command.trim().split(" ");
-    switch(commandKeys[0]){
-        case COMMAND.OPEN:
-        case COMMAND.CLOSE:
-            const panelName = commandKeys.slice(1).join(" ");
-            const panel = getPanelByName(panelName);
-            const opened = commandKeys[0] === COMMAND.OPEN;
-            if(panel){
-                dispatch(toggleOpenPanel({panelType: panel, opened: opened}));
-                return sendResponse(COMMAND_CODE.OK);
-            } else {
-                return sendResponse(COMMAND_CODE.ERROR, `${panelName} is not a valid PANEL name.`);
-            }
-        case COMMAND.GET:{
-            const dishName = commandKeys[1];
-            const dishType = getDishByName(dishName);
-            if(dishType) {
-                dispatch(displayDish(dishType));
-                return sendResponse(COMMAND_CODE.OK);
-            } else {
-                return sendResponse(COMMAND_CODE.ERROR, `${dishName} ia not a valid DISH name.`);
-            }
-        }
-        case COMMAND.STASH:
-            const dishName = commandKeys[1];
-            const id = (commandKeys.length > 2) ? parseInt(commandKeys[2]) : 1;
-            const dishType = getDishByName(dishName);
-
-            if(dishType) {
-                if(isNaN(id)) return sendResponse(COMMAND_CODE.ERROR, `${dishName} is not a valid DISH name.`);
-                dispatch(removeDish({dishType: dishType,id: id}));
-                return sendResponse(COMMAND_CODE.OK);
-            } else {
-                return sendResponse(COMMAND_CODE.ERROR, `${dishName} is not a valid DISH name.`);
-            }
-        case COMMAND.CLEAR:
-            clearConsole();
+        case 'ArrowUp':
+        case 'ArrowDown':
+            e.preventDefault();
+            getPreviousCommand(e.key==="ArrowUp" ? -1 : 1);
             break;
         default:
-            return sendResponse(COMMAND_CODE.ERROR, `${command} is not a valid command.`);
+            setPreviousCommandIndex(commandLog.length);
+            break;
     }
   }
-
-  useEffect(() => {
-    inputRef.current?.addEventListener("keydown",handleKeyDown);
-  },[]);
 
   return (
     <StyledConsole onClick={focusConsole}>
         <StyledConsoleHistory>
             {
-                consoleLog.map((command,index) => (
+                commandLog.map((command,index) => (
                     <CommandLine 
-                        key={index} 
+                        key={`${index}-${command.command}`} 
                         command={command.command}
                         info={command.info}
                         infoType={command.infoType}
@@ -118,7 +116,7 @@ const Console : FC = () => {
             <StyledConsoleCommand>
                 What would you like to do?
             </StyledConsoleCommand>
-            <StyledConsoleInput type="text" ref={inputRef} />
+            <StyledConsoleInput type="text" ref={inputRef} onKeyDown={(e)=>handleKeyDown(e)} />
         </StyledConsoleLabel>
     </StyledConsole>
   )
@@ -192,4 +190,4 @@ const StyledConsoleInput = styled.input`
     }
 `;
 
-export default React.memo(Console)
+export default Console

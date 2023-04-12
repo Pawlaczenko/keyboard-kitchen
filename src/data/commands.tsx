@@ -16,12 +16,6 @@ export type commandResponse = {
     message?: string,
 }
 
-export type commandLine = {
-    command?: string,
-    info?: string,
-    infoType: COMMAND_CODE
-}
-
 export const sendResponse = (code:COMMAND_CODE,message?: string) : commandResponse => {
     return {
         code: code,

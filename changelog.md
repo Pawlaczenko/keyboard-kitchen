@@ -111,3 +111,12 @@
 * A basic command interpreter has been implemented, with plans for future refactoring.
 * The following commands have been added: OPEN, CLOSE, GET, STASH, and CLEAR.
 * A new commandResponse type has been introduced to provide response information, including code and message, when interpreting a command.
+
+## 0.4.3 (12.04.2023)
+### Fixing and improving Console - Part I
+* Extracted PanelsWrapper to seperate component.
+* Extracted commandInterpreter function to seperate file.
+* Fixed the issue with useSelector value in Console component not updating.
+* Set capacity of commands visible in Console to 70
+* Set capacity of commands accessible in commandHistory in Console to 50
+* Added handling for additional errors in commandInterpreter

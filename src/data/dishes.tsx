@@ -12,6 +12,8 @@ export enum DISHES {
     BLENDER = "blender",
 }
 
+export const MAX_DISHES_ON_SCREEN : number = 5;
+
 export const getDishByName = (name: string) : DISHES => {
     const dishName = name.toUpperCase().replace(" ","") as keyof typeof DISHES;
     return DISHES[dishName];
