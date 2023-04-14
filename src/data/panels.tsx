@@ -2,7 +2,7 @@ export enum PANELS {
     RECIPE="recipe", 
     FRIDGE="fridge",
     WORKTOP="worktop",
-    RECIPEBOOK="recipe book",
+    COOKBOOK="cookbook",
 }
 
 export interface IPanelTheme {
@@ -25,7 +25,7 @@ export const PANEL_THEMES = new Map<PANELS,IPanelTheme>([
             panelColor: "var(--color-yellow)",
             barColor: "var(--color-primary)",
             buttonHoverColor: "var(--color-secondary)",
-            ratio: "1.2/1"
+            ratio: "1/1.2"
         }
     ],
     [
@@ -47,7 +47,7 @@ export const PANEL_THEMES = new Map<PANELS,IPanelTheme>([
         }
     ],
     [
-        PANELS.RECIPEBOOK,
+        PANELS.COOKBOOK,
         {
             panelColor: "#EDF1D6",
             barColor: "#609966",

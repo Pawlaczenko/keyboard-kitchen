@@ -120,3 +120,12 @@
 * Set capacity of commands visible in Console to 70
 * Set capacity of commands accessible in commandHistory in Console to 50
 * Added handling for additional errors in commandInterpreter
+
+## 0.4.4 (14.04.2023)
+### Fixing and improving Console - Part II
+* Changed font to Minecraft font (last time).
+* Rewritten commandInterpreter as a Class. Refactored error handling to be more responsive for future commands.
+* Added the ability to pass ReactNode element as the command info.
+* Added Welcome Message.
+* Renamed Recipe Book Panel to Cookbook Panel
+* Added Read command that displays a single recipe.

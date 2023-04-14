@@ -1,92 +1,140 @@
 import { Dispatch } from "@reduxjs/toolkit";
-import { COMMAND, COMMAND_CODE, commandResponse, sendResponse } from "../../data/commands";
-import { getPanelByName } from "../../data/panels";
-import { DesktopState, displayDish, removeDish, toggleOpenPanel } from "../../features/desktop/desktopSlice";
-import { MAX_DISHES_ON_SCREEN, getDishByName } from "../../data/dishes";
+import { COMMAND, COMMAND_CODE, commandResponse, createResponse } from "../../data/commands";
+import { PANELS, getPanelByName } from "../../data/panels";
+import { displayDish, displayRecipe, stashDish, toggleOpenPanel } from "../../features/desktop/desktopSlice";
+import { getDishByName } from "../../data/dishes";
+import { doesRecipeExist } from '../../data/recipes';
 
-type IInterpreterProps = {
-    input: string,
-    dispatch: Dispatch,
-    currentDesktopState: DesktopState,
-    clearConsoleAction: ()=>void
-}
+export class CommandInterpreter {
+    private dispatch : Dispatch;
+    private clearConsoleCommand : ()=>void;
 
-export const runCommandInterpreter = ({input,dispatch,currentDesktopState,clearConsoleAction}:IInterpreterProps) : commandResponse | undefined => {
-    const command_args = input.trim().split(" ");
-    const command = command_args[0];
-    const command_parameters = command_args.slice(1);
-    
-    const openedPanels = currentDesktopState.panels;
-    const openedDishes = currentDesktopState.dishes;
-
-    switch(command){
-        // OPENING AND CLOSING PANELS
-        case COMMAND.OPEN:
-        case COMMAND.CLOSE:
-            const panelName = command_parameters.join(" ");
-            const panel = getPanelByName(panelName);
-            const shouldOpen = command === COMMAND.OPEN;
-
-            if(panel){
-                const currentPanelState = openedPanels[panel];
-                if(currentPanelState && shouldOpen || !currentPanelState && !shouldOpen){
-                    return sendResponse(COMMAND_CODE.ERROR,`${panelName} is already ${currentPanelState?"opened":"closed"}`);
-                }
-                dispatch(toggleOpenPanel({panelType: panel, opened: shouldOpen}));
-                return sendResponse(COMMAND_CODE.OK);
-            } else {
-                return sendResponse(
-                    COMMAND_CODE.ERROR, 
-                    `${panelName} is not a valid PANEL name.`
-                );
-            }
-        // SHOWING DISHES
-        case COMMAND.GET:{
-            if(command_parameters.length===0) return sendResponse(COMMAND_CODE.ERROR, `You must give the Dish name.`);
-            const dishName = command_parameters[0];
-            const dishType = getDishByName(dishName);
-            if(dishType) {
-                const currentDish = openedDishes[dishType];
-                if(currentDish.length === MAX_DISHES_ON_SCREEN){
-                    return sendResponse(COMMAND_CODE.ERROR, `You have reached the max capacity of ${MAX_DISHES_ON_SCREEN} dishes of the same type on screen.`);
-                }
-                dispatch(displayDish(dishType));
-                return sendResponse(COMMAND_CODE.OK);
-            } else {
-                return sendResponse(COMMAND_CODE.ERROR, `${dishType} is not a valid DISH name.`);
-            }
-        }
-        // REMOVING DISHES
-        case COMMAND.STASH:{
-            if(command_parameters.length===0) return sendResponse(COMMAND_CODE.ERROR, `You must give the Dish name.`);
-            const dishName = command_parameters[0];
-            const dishType = getDishByName(dishName);
-
-            const ids = command_parameters.slice(1);
-
-            if(dishType) {
-                if(ids.length === 0) return sendResponse(COMMAND_CODE.ERROR, `You must pass the dish'es ids in order to remove them.`);
-                
-                const currentDish = openedDishes[dishType];
-                let invalidIds = "";
-                ids.map(dishId => {
-                    const parsedId = parseInt(dishId);                    
-                    if(isNaN(parsedId) || !currentDish.find(id=>id===parsedId)) invalidIds+=`${dishId} `;
-                    
-                    dispatch(removeDish({dishType: dishType, id: parsedId}));
-                })
-
-                if(invalidIds.length > 0) return sendResponse(COMMAND_CODE.ERROR, `Dishes with IDs: ${invalidIds} do not exist.`);
-                return sendResponse(COMMAND_CODE.OK);
-            } else {
-                return sendResponse(COMMAND_CODE.ERROR, `${dishName} is not a valid DISH name.`);
-            }
-        }
-        // CLEARING THE CONSOLE
-        case COMMAND.CLEAR:
-            clearConsoleAction();
-            break;
-        default:
-            return sendResponse(COMMAND_CODE.ERROR, `${input} is not a valid command.`);
+    constructor(dispatch: Dispatch,clearConsoleCommand:()=>void){
+        this.dispatch = dispatch;
+        this.clearConsoleCommand = clearConsoleCommand;
     }
-  }
+
+    public run(input: string): commandResponse | undefined {
+        const normalizedInput = input.toLocaleLowerCase().trim().split(" ");;
+        const command = normalizedInput[0];
+        const command_args = normalizedInput.slice(1);
+        let command_response: commandResponse | undefined = {code: COMMAND_CODE.OK};
+
+        try {
+            switch(command){
+                case COMMAND.OPEN:
+                    this.command_open(command_args[0]);
+                    break;
+                case COMMAND.CLOSE:
+                    const panelName = command_args[0];
+                    const recipeName = command_args.slice(1).join(" ");
+                    this.command_close(panelName,recipeName);
+                    break;
+                case COMMAND.GET:
+                    this.command_get(command_args);
+                    break;
+                case COMMAND.STASH:
+                    this.command_stash(command_args);
+                    break;
+                case COMMAND.READ:
+                    const recipe = command_args.join(" ");
+                    this.command_read(recipe);
+                    break;
+                case COMMAND.CLEAR:
+                    this.clearConsoleCommand();
+                    command_response = undefined;
+                    break;
+                default:
+                    throw new Error(`Incorrect command syntax`);
+            }
+        } catch(error) {
+            command_response = createResponse(COMMAND_CODE.ERROR, this.getError(error));
+        }
+
+        return command_response;
+    }
+
+    private command_open(panelName: string) {
+        if(!panelName) throw new Error(`Incorrect command syntax.`);
+        
+        const panel : PANELS = getPanelByName(panelName);
+        if(panel) {
+            this.toggle_panel(panel,true);
+        } else {
+            throw new Error(`"${panelName}" is not a valid PANEL`);
+        }
+    }
+
+    private command_close(panelName: string, recipeName?: string) {
+        if(!panelName) return createResponse(COMMAND_CODE.ERROR,`Incorrect command syntax.`);
+        const panel = getPanelByName(panelName);
+        
+        if(panel===PANELS.RECIPE){
+            if(!recipeName || recipeName.length===0){
+                throw new Error(`Incorrect command syntax. Please provide recipe name`);
+            }
+
+            const recipe = doesRecipeExist(recipeName);
+            if(recipe){
+                this.dispatch(displayRecipe({display:false,recipe: recipe}))
+            } else {
+                throw new Error(`No recipe was found with the name "${recipeName}"`);
+            }
+        } else if(panel) {
+            this.toggle_panel(panel,false);
+        } else {
+            throw new Error(`No panel was found with the name "${panelName}"`);
+        }
+    }
+
+    private command_get(dishToOpen:string[]) {
+        const [dishName,dishQuantity] = dishToOpen;
+        if(!dishName) throw new Error(`Incorrect comamnd syntax. Provide a dish name`);
+        let qnt : number = dishQuantity ? parseInt(dishQuantity) : 1;
+
+        if(isNaN(qnt)) throw new Error(`Incorrect comamnd syntax. Provide a correct quantity number`);
+
+        const dishType = getDishByName(dishName);
+        if(dishType){
+            for(let i = 0; i < qnt; i++) {
+                this.dispatch(displayDish(dishType));
+            }
+        } else {
+            throw new Error(`No dish was found with the name "${dishName}"`)
+        }
+    }
+
+    private command_stash(dishesToStash:string[]) {
+        if(dishesToStash.length===0) throw new Error(`Incorrect comamnd syntax. Provide a dish name`);
+        const dishName = dishesToStash[0];
+        let ids = dishesToStash.slice(1);
+        if(ids.length === 0) throw new Error(`Incorect command syntax. Please provide id's of the dish you wanted to stash`)
+
+        const dishType = getDishByName(dishName);
+        if(dishType) {          
+            ids.map((id) => {
+                this.dispatch(stashDish({dishType: dishType, id: parseInt(id)}));
+            });
+        } else {
+            throw new Error(`No dish was found with the name "${dishName}"`)
+        }
+    }
+
+    private command_read(recipeName: string) {
+        const recipe = doesRecipeExist(recipeName);
+        if(recipe){
+            this.dispatch(displayRecipe({display:true,recipe: recipe}));
+        } else {
+            throw new Error(`No recipe was found with the name "${recipeName}"`);
+        }
+    }
+
+    private toggle_panel(panel:PANELS,incomingState:boolean) {         
+        this.dispatch(toggleOpenPanel({panelType: panel, opened: incomingState}));
+    }
+
+    private getError(error: unknown) : string {
+        if (error instanceof Error) return error.message
+        return String(error)
+    }
+}

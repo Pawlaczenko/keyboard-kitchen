@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import FridgePanel from '../Panels/FridgePanel/FridgePanel';
 import WorktopPanel from '../Panels/WorktopPanel/WorktopPanel';
-import RecipeBookPanel from '../Panels/RecipeBookPanel/RecipeBookPanel';
+import CookbookPanel from '../Panels/CookbookPanel/CookbookPanel';
 import RecipePanel from '../Panels/RecipePanel/RecipePanel';
 import { DISHES } from '../../data/dishes';
 import Dish from '../Dish/Dish';
@@ -31,8 +31,8 @@ const PanelsWrapper : FC = () => {
         <ContainerContext.Provider value={appRef}>
           {openedPanels[PANELS.FRIDGE] && <FridgePanel />}
           {openedPanels[PANELS.WORKTOP] && <WorktopPanel />}
-          {openedPanels[PANELS.RECIPEBOOK] && <RecipeBookPanel />}
-          {openedRecipes.map(recipe => <RecipePanel recipeName={recipe} />)}
+          {openedPanels[PANELS.COOKBOOK] && <CookbookPanel />}
+          {openedRecipes.map(recipe => <RecipePanel recipeName={recipe} key={recipe} />)}
           { dishArrays }
         </ContainerContext.Provider>
       </StyledPanelsWrapper>

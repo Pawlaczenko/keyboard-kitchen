@@ -14,8 +14,8 @@ export const variables = css`
         --color-error: #f74134;
 
         //TYPOGRAPHY
-        --fs-heading: 2.4rem;
-        --fs-body: 2rem;
+        --fs-heading: 2rem;
+        --fs-body: 1.6rem;
 
         --fw-regular: 400;
         --fw-bold: 700;

@@ -28,7 +28,8 @@ const getStoredIngredient = (name: ingredientKey, quantity: number, portioned?: 
     return ingredient;
 }
 
-export type recipeKey = "Spaghetti Carbonara" | "Tomato Soup"
+export const recipeKeyArray = ["Spaghetti Carbonara" , "Tomato Soup"] as const;
+export type recipeKey = typeof recipeKeyArray[number];
 
 export const RECIPES = new Map<recipeKey,IRecipe>([
     [
@@ -122,3 +123,5 @@ export const RECIPES = new Map<recipeKey,IRecipe>([
         }
     ],
 ])
+
+export const doesRecipeExist = (recipeName:string) : undefined | recipeKey => recipeKeyArray.find(item=>item.toLocaleLowerCase()===recipeName);

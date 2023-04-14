@@ -1,13 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { IStoredIngredient, INGREDIENTS } from '../../data/ingredients';
+import { IStoredIngredient, INGREDIENTS, PORTIONING } from '../../data/ingredients';
 
 export type FridgeState = {
     ingredients: IStoredIngredient[];
 };
 
 const initialState: FridgeState = {
-    ingredients: []
+    ingredients: [
+        {
+            ingredient: INGREDIENTS.get("apple")!,
+            quantity: 5,
+            portioned: PORTIONING.SLICEABLE
+        },
+        {
+            ingredient: INGREDIENTS.get("bacon")!,
+            quantity: 1,
+            portioned: PORTIONING.CHOPPABLE
+        }
+    ]
 };
 
 export const fridgeSlice = createSlice({

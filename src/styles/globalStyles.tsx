@@ -14,8 +14,10 @@ const GlobalStyles = createGlobalStyle`
         }
 
         @font-face {
-            font-family: 'rainyhearts';
-            src: url('/fonts/rainyhearts.ttf');
+            font-family: 'Minecraft';
+            src: url('/fonts/Minecraft.woff2') format('woff2'),
+                 url('/fonts/Minecraft.woff') format('woff'),
+                 url('/fonts/Minecraft.ttf') format('truetype');
         }
     }
 
@@ -25,7 +27,7 @@ const GlobalStyles = createGlobalStyle`
         background-color: var(--color-console);
 
         font-size: var(--fs-body);
-        font-family: 'rainyhearts';
+        font-family: 'Minecraft';
     }
 `;
 

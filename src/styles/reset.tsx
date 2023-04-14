@@ -37,6 +37,8 @@ export const reset = css`
     // 8. Avoid text overflows
     p, h1, h2, h3, h4, h5, h6 {
         overflow-wrap: break-word;
+        word-spacing: 4px;
+        line-height: 1.7;
     }
     // 9. Create a root stacking context
     #root, #__next {

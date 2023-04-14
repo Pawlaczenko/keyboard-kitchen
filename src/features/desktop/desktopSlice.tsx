@@ -27,7 +27,7 @@ const initialState: DesktopState = {
     panels: {
         [PANELS.FRIDGE]: false,
         [PANELS.WORKTOP]: false,
-        [PANELS.RECIPEBOOK]: false,
+        [PANELS.COOKBOOK]: false,
     }
 };
 
@@ -36,6 +36,12 @@ export const desktopSlice = createSlice({
     initialState,
     reducers: {
         toggleOpenPanel: (state, action: PayloadAction<{panelType: PANELS, opened?: boolean}>) => {
+            const currentPanelState = state.panels[action.payload.panelType];
+            const incomingState = action.payload.opened;
+            if((currentPanelState && incomingState) || (!currentPanelState && !incomingState)){
+                throw new Error(`${action.payload.panelType} is already ${currentPanelState?"opened":"closed"}`)
+            }
+
             const panels = { ...state.panels, [action.payload.panelType]: action.payload.opened };
             state.panels = panels;
         },
@@ -44,28 +50,33 @@ export const desktopSlice = createSlice({
             const shouldDisplay = action.payload.display;
             const isRecipeVisible = state.recipes.some((item) => item === name);
 
-            if(!shouldDisplay && isRecipeVisible){ //If Exists And I want to hide the recipe
+            if(!shouldDisplay){ //Hide
+                if(!isRecipeVisible) throw new Error(`${name} recipe is already closed.`);
                 state.recipes = state.recipes.filter(item => item!==name);
-            } else if(shouldDisplay && !isRecipeVisible){
+            } else { //show
+                if(isRecipeVisible) throw new Error(`${name} recipe is already opened.`);
                 state.recipes.push(name);
             }
         },
         displayDish: (state, action: PayloadAction<DISHES>)=> {
             const dishType = action.payload;
             const id = findNextId([...state.dishes[dishType]]);
-            if(state.dishes[dishType].length < MAX_DISHES_ON_SCREEN){
-                state.dishes[dishType].push(id);
+            if(state.dishes[dishType].length === MAX_DISHES_ON_SCREEN){
+                throw new Error(`You have reached the max capacity of ${MAX_DISHES_ON_SCREEN} dishes of the same type on screen.`)
             }
+            state.dishes[dishType].push(id);
         },
-        removeDish: (state, action: PayloadAction<DisplayedDish>)  => {
+        stashDish: (state, action: PayloadAction<DisplayedDish>)  => {
             const dishType = action.payload.dishType;
             const id = action.payload.id;
             if(state.dishes[dishType].includes(id)){
                 state.dishes[dishType] = state.dishes[dishType].filter(item => item!==id);
+            } else {
+                throw new Error(`No dish to stash was found with an id of "${id}"`);
             }
         }
     },
 });
 
-export const { toggleOpenPanel,displayRecipe,displayDish,removeDish} = desktopSlice.actions;
+export const { toggleOpenPanel,displayRecipe,displayDish,stashDish} = desktopSlice.actions;
 export default desktopSlice.reducer;
