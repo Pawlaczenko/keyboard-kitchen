@@ -3,16 +3,18 @@ import React, { FC } from 'react'
 import styled from 'styled-components';
 import PanelBar from './PanelBar';
 import DraggableEntity from '../../DraggableEntity/DraggableEntity';
-import { IPanelTheme } from '../../../data/panels';
+import { IPanelTheme, PANELS, PANEL_THEMES } from '../../../data/panels';
 
 interface IPanelProps {
   children: React.ReactNode,
-  panelTheme: IPanelTheme,
-  title: string
+  panelType: PANELS,
+  title: string,
+  handlePanelClose?: ()=>void;
 }
 
-const Panel : FC<IPanelProps> = ({children,panelTheme,title}) => {
+const Panel : FC<IPanelProps> = ({children,panelType,title,handlePanelClose}) => {
   const dragControls = useDragControls();
+  const panelTheme = PANEL_THEMES.get(panelType)!;
 
   const startDrag = (event : React.PointerEvent<Element>) => {
     dragControls.start(event, { snapToCursor: false })
@@ -22,10 +24,9 @@ const Panel : FC<IPanelProps> = ({children,panelTheme,title}) => {
     <DraggableEntity dragControlsObject={dragControls}>
       <StyledPanelWrapper panelTheme={panelTheme}>
         <PanelBar
-          barColor={panelTheme.barColor}
-          buttonHoverColor={panelTheme.buttonHoverColor} 
           title={title}
           handlePointerDown={startDrag}
+          handlePanelClose={handlePanelClose}
         />
         <StyledPanelChildren>
             {children}
@@ -38,13 +39,14 @@ const Panel : FC<IPanelProps> = ({children,panelTheme,title}) => {
 const StyledPanelWrapper = styled(motion.div)<{panelTheme: IPanelTheme}>`
     --panel-min-size: 15rem;
     --panel-default-size: 35rem;
-    --panel-radius: 2rem;
+    --panel-radius: .5rem;
 
     ${({panelTheme}) => `
       --theme-ratio: ${panelTheme.ratio || "1/1"};
       --theme-panel: ${panelTheme.panelColor};
       --theme-bar: ${panelTheme.barColor};
       --theme-hover: ${panelTheme.buttonHoverColor};
+      --theme-text: ${panelTheme.textColor || "black"};
     `}
 
     min-width: var(--panel-min-size);
@@ -83,4 +85,4 @@ const StyledPanelChildren = styled.div`
   }
 `;
 
-export default Panel
+export default React.memo(Panel)

@@ -9,7 +9,7 @@ enum METHODS {
 }
 
 export interface IRecipe {
-    name: dishKey,
+    name: recipeKey,
     steps: IRecipeSteps[],
     text: string[]
 }
@@ -28,9 +28,10 @@ const getStoredIngredient = (name: ingredientKey, quantity: number, portioned?: 
     return ingredient;
 }
 
-type dishKey = "Spaghetti Carbonara" | "Tomato Soup"
+export const recipeKeyArray = ["Spaghetti Carbonara" , "Tomato Soup"] as const;
+export type recipeKey = typeof recipeKeyArray[number];
 
-export const RECIPES = new Map<dishKey,IRecipe>([
+export const RECIPES = new Map<recipeKey,IRecipe>([
     [
         "Spaghetti Carbonara",
         {
@@ -122,3 +123,5 @@ export const RECIPES = new Map<dishKey,IRecipe>([
         }
     ],
 ])
+
+export const doesRecipeExist = (recipeName:string) : undefined | recipeKey => recipeKeyArray.find(item=>item.toLocaleLowerCase()===recipeName);

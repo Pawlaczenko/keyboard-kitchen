@@ -1,7 +1,10 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useCallback, useRef, useState } from 'react'
 import styled from 'styled-components';
 import { DragControls, motion } from 'framer-motion';
 import { useContainerContext } from '../../context/ContainerContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
+import { increaseHighestZIndex } from '../../features/zindex/zindexSlice';
 
 interface IDraggableEntityProps {
     dragControlsObject?: DragControls,
@@ -9,37 +12,38 @@ interface IDraggableEntityProps {
 }
 
 const DraggableEntity : FC<IDraggableEntityProps> = ({children,dragControlsObject}) => {
-  const containerContext = useContainerContext();
-  const [zindex,setZIndex] = useState(containerContext.zIndexStack);
+  const constraintsContext = useContainerContext();
+  const highestIndex = useSelector((state: RootState) => state.zindex);
+  const zIndexDispatch = useDispatch();
+
+  const zindex = useRef<number>(highestIndex.zindex);
 
   const handleZIndexChange = () => {
-    setZIndex(containerContext.zIndexStack+1);
-  }
-  
-  useEffect(()=>{
-    containerContext.incrementzIndexStack(zindex);
-  },[zindex]);
+    const newIndex = highestIndex.zindex+1;
+    zindex.current = newIndex;
+    zIndexDispatch(increaseHighestZIndex(newIndex));
+  };
 
   return (
     <StyledDraggableEntity
         drag
-        dragConstraints={containerContext.constraints} 
+        dragConstraints={constraintsContext} 
         dragMomentum={false}
         dragControls={dragControlsObject}
         dragListener={(dragControlsObject === undefined)}
-        dragElastic={0}
+        dragElastic={.1}
         whileDrag={{scale: 1.02}}
         onDragStart={handleZIndexChange}
-        indexStack={zindex}
+        indexStack={zindex.current}
     >
         {children}
     </StyledDraggableEntity>
   )
 }
 
-export const StyledDraggableEntity = styled(motion.div)<{indexStack: number}>`
+export const StyledDraggableEntity = React.memo(styled(motion.div)<{indexStack: number}>`
     position: absolute;
     z-index: ${(props)=>props.indexStack};
-`;
+`);
 
-export default DraggableEntity
+export default React.memo(DraggableEntity)

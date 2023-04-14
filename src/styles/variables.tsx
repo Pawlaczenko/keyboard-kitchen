@@ -10,6 +10,8 @@ export const variables = css`
         --color-primary: #FAAB78;
         --color-secondary: #FFDCA9;
         --color-yellow: #fcf9be;
+        --color-console: #121212;
+        --color-error: #f74134;
 
         //TYPOGRAPHY
         --fs-heading: 2rem;

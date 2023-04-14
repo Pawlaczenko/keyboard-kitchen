@@ -1,12 +1,16 @@
 import Panel from '../Panel/Panel'
-import { PANELS, PANEL_THEMES } from '../../../data/panels';
-import { useSelector } from 'react-redux';
+import { PANELS } from '../../../data/panels';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../app/store';
 import { INGREDIENTS_TAG, IStoredIngredient } from '../../../data/ingredients';
 import FridgeGroup from './FridgeGroup';
+import { toggleOpenPanel } from '../../../features/desktop/desktopSlice';
+import React from 'react';
 
 const FridgePanel = () => {
-  const fridgeStorage = useSelector((state: RootState) => state.fridge);
+  const fridgeStorage = useSelector((state: RootState) => state.fridge.ingredients);
+  const dispatch = useDispatch();
+
   const fridgeCategories = new Map<INGREDIENTS_TAG,string>([
     [INGREDIENTS_TAG.VEGETABLE,"#409E49"],
     [INGREDIENTS_TAG.SPICE,"#FFAA00"],
@@ -29,11 +33,21 @@ const FridgePanel = () => {
       });
   }
 
+  const handlePanelClose = () => {
+    dispatch(toggleOpenPanel({
+      panelType: PANELS.FRIDGE,
+      opened:false
+    }))
+  }
+
   return (
-    <Panel title="Fridge" panelTheme={PANEL_THEMES.get(PANELS.FRIDGE)!}>
+    <Panel 
+      title="Fridge" 
+      panelType={PANELS.FRIDGE} 
+      handlePanelClose={handlePanelClose}>
         {printFridgeStorage()}
     </Panel>
   )
 }
 
-export default FridgePanel
+export default React.memo(FridgePanel)

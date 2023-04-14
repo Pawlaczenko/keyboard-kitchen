@@ -1,40 +1,26 @@
-import { FC, useRef, useState } from "react"
+import { FC } from "react"
 import styled from "styled-components"
-import RecipePanel from "./components/Panels/RecipePanel/RecipePanel";
-import { ContainerContext } from "./context/ContainerContext";
 import GlobalStyles from "./styles/globalStyles";
-import { DISHES } from './data/dishes';
-import Dish from "./components/Dish/Dish";
-import useContainer from './hooks/useContainer';
-import FridgePanel from './components/Panels/FridgePanel/FridgePanel';
-import WorktopPanel from "./components/Panels/WorktopPanel/WorktopPanel";
-import RecipeBookPanel from './components/Panels/RecipeBookPanel/RecipeBookPanel';
-import { RECIPES } from './data/recipes';
+import Console, { StyledConsole } from "./components/Console/Console";
+import { motion } from "framer-motion";
+import PanelsWrapper from "./components/PanelsWrapper/PanelsWrapper";
 
 const App : FC = () => {
-  const containerContext = useContainer();
-
   return (
-    <ContainerContext.Provider value={containerContext}>
-      <StyledAppWrapper ref={containerContext.constraints}>
-        <GlobalStyles />
-
-        {/* Panels */}
-
-        <RecipeBookPanel />
-        <RecipePanel recipe={RECIPES.get("Tomato Soup")!} />
-        <RecipePanel recipe={RECIPES.get("Spaghetti Carbonara")!} />
-        
-        {/* /Panels */}
-      </StyledAppWrapper>
-    </ContainerContext.Provider>
+    <StyledAppWrapper>
+      <GlobalStyles />
+      <PanelsWrapper />
+      <Console />
+    </StyledAppWrapper>
   )
 }
 
-const StyledAppWrapper = styled.div`
+const StyledAppWrapper = styled(motion.div)`
   width: 100vw;
   height: 100vh;
-  position: relative;
+
+  display: grid;
+  grid-template-columns: 1fr 25%;
 `;
 
 export default App

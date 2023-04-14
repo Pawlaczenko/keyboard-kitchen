@@ -1,37 +1,34 @@
 import React, { FC } from 'react'
 import styled from 'styled-components';
 import { flexCenter, flexStart } from '../../../styles/mixins';
-import { FiX, FiMinus } from "react-icons/fi";
+import { FiX } from "react-icons/fi";
+import { PANELS } from '../../../data/panels';
 
 interface IPanelBarProps {
-    barColor: string,
-    buttonHoverColor: string,
     title: string,
     handlePointerDown: (event:React.PointerEvent<Element>)=>void;
+    handlePanelClose?: ()=>void
 }
 
-const PanelBar : FC<IPanelBarProps> = ({barColor: primaryColor,buttonHoverColor: secondaryColor,title, handlePointerDown}) => {
+const PanelBar : FC<IPanelBarProps> = ({title, handlePointerDown,handlePanelClose}) => {
   return (
-    <StyledPanelBar barColor={primaryColor} hoverColor={secondaryColor} onPointerDown={handlePointerDown}>
+    <StyledPanelBar onPointerDown={handlePointerDown}>
         <Title>{title}</Title>
         <ButtonsWrapper>
-            <BarButton><FiMinus /></BarButton>
-            <BarButton><FiX /></BarButton>
+            <BarButton onClick={handlePanelClose}><FiX /></BarButton>
         </ButtonsWrapper>
     </StyledPanelBar>
   )
 }
 
-const StyledPanelBar = styled.div<{barColor: string, hoverColor: string}>`
+const StyledPanelBar = styled.div`
     --bar-size: 4rem;
-    --bar-color: ${(props) => props.barColor};
-    --hover-color: ${(props) => props.hoverColor};
     
     position: relative;
     height: var(--bar-size);
     padding-left: 2rem;
     
-    background: var(--bar-color);
+    background: var(--theme-bar);
     text-transform: uppercase;
 
     cursor: grab;
@@ -46,6 +43,8 @@ const Title = styled.p`
     text-transform: uppercase;
     white-space: nowrap;
     height: 100%;
+    color: var(--theme-text);
+    font-weight: var(--fw-bold);
 
     ${flexStart};
 `;
@@ -64,11 +63,11 @@ const BarButton = styled.button`
     ${flexCenter};
 
     border: none;
-    background-color: var(--hover-color);
+    background-color: var(--theme-hover);
     cursor: pointer;
 
     &:hover {
-        background: var(--bar-color);
+        background: var(--theme-bar);
     }
 `;
 

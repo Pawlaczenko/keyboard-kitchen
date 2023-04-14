@@ -1,16 +1,8 @@
 import React, { createContext, RefObject, useContext } from "react"
 
-export interface IContainerContext {
-    constraints: RefObject<HTMLDivElement> | undefined,
-    zIndexStack: number,
-    incrementzIndexStack: (n:number)=>void
-}
+export type IContainerContext = RefObject<HTMLDivElement> | undefined;
 
-const initialContainerContext : IContainerContext = {
-    constraints: undefined,
-    zIndexStack: 0,
-    incrementzIndexStack: ()=>{}
-}
+const initialContainerContext : IContainerContext = undefined;
 
 export const ContainerContext = React.createContext<IContainerContext>(initialContainerContext);
 
